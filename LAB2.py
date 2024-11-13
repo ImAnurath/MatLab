@@ -1,5 +1,5 @@
 import numpy as np
-import matplot.lib 
+import matplotlib.pyplot as plt
 '''
 dv2(t)/R = dv2(t)/dt C
 v2 = 0
