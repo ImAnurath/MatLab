@@ -37,7 +37,7 @@ k2 = random.uniform(0, 1)
 K = np.array([k1, k2])
 lamb = 0.01
 actual_k1 = 0.5555555555555556 # 5/9
-actual_k2 = -17.77777777777778 # 17 7/9
+actual_k2 = -17.77777777777778 # -17 7/9
 RLSE = rlse(X, Y, K, lamb)
 print(f"{actual_k1} = {RLSE[0]}, {actual_k2} = {RLSE[1]}")
 plt.figure(figsize=(10, 6))
