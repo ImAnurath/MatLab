@@ -1,51 +1,63 @@
 import numpy as np
 import matplotlib.pyplot as plt
-'''
-dv2(t)/R = dv2(t)/dt C
-v2 = 0
-v2(h) = (v1-v2(0))/RC*h + v2(0)
-v(2h) = (v1-v2(h))/RC*h + v2(h)
 
-Init Conditions=>
-v2(0) = 0 ; t = [0, 0.5] ; v1 = 1
-v2(0.5) = 1 ; t = [0.5, 1] ; v1=0
-RC= 0.1
-'''
-import numpy as np
-import matplotlib.pyplot as plt
+def func_approx():
+    # Clear all variables and close all figures
+    plt.close('all')
 
-# Parameters
-RC = 0.1
-h = 0.001  # Smaller step size for Euler's method
-t = np.arange(0, 1, h)
-v1_values = [(0, 0.5, 1), (0.5, 1, 0)]  # Intervals and corresponding v1 values
-v2_initial = 0  # Initial condition
+    # Number of points (N) for interpolation
+    N = 21  # You can vary N; increasing it increases the approximation error
+    x = np.linspace(-1, 1, N)
+    yN = f1(x)
 
-# Numerical solution using Euler's method
-v2_num = [v2_initial]
-for time_start, time_end, v1 in v1_values:
-    t_range = np.arange(time_start, time_end, h)
-    for i in range(len(t_range) - 1):
-        dv2_dt = (v1 - v2_num[-1]) / RC
-        v2_next = v2_num[-1] + h * dv2_dt
-        v2_num.append(v2_next)
+    # Find the Lagrange polynomial coefficients
+    l = lagranp(x, yN)
 
-# Analytical solution
-v2_analytic = []
-for time in t:
-    if time < 0.5:
-        v2_a = 1 * (1 - np.exp(-time / RC))
-    else:
-        v2_a = 1 * np.exp(- (time - 0.5) / RC)
-    v2_analytic.append(v2_a)
+    # To get a smoother curve, use 100 points for evaluation
+    xx = np.linspace(-1, 1, 100)
+    yl = np.polyval(l[::-1], xx)  # Reverse coefficients for np.polyval
 
-# Plotting the results
-plt.figure(figsize=(10, 6))
-plt.plot(t, v2_num, label="Numerical Solution (Euler's Method)", linestyle='--')
-plt.plot(t, v2_analytic, label="Analytical Solution", color='red')
-plt.xlabel("Time (s)")
-plt.ylabel("Voltage $v_2(t)$")
-plt.title("Comparison of Numerical and Analytical Solutions")
-plt.legend()
-plt.grid()
-plt.show()
+    # Plot the interpolation
+    plt.plot(x, yN, '*', label='Data Points')
+    plt.plot(xx, yl, label='Lagrange Polynomial')
+    plt.plot(xx, f1(xx), label='Original Function')
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+
+def f1(x):
+    """Original function."""
+    return 1 / (1 + 8 * x**2)
+
+
+def lagranp(x, y):
+    """
+    Compute the Lagrange interpolating polynomial.
+
+    Parameters:
+    - x: array of x values
+    - y: array of corresponding y values
+
+    Returns:
+    - l: coefficients of the Lagrange polynomial
+    """
+    N = len(x) - 1  # Degree of the polynomial
+    l = np.zeros(N + 1)
+    L = []
+
+    for m in range(N + 1):
+        P = np.array([1.0])
+        for k in range(N + 1):
+            if k != m:
+                # Polynomial multiplication using convolution
+                P = np.convolve(P, [1, -x[k]]) / (x[m] - x[k])
+        L.append(P)
+        l += y[m] * P
+
+    return l
+
+
+# Run the function approximation
+if __name__ == "__main__":
+    func_approx()
