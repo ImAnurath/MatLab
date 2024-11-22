@@ -50,8 +50,6 @@ ODE = sp.Eq(RC_sym * Uout(t_sym).diff(t_sym) + Uout(t_sym), Uin)
 Uin = sp.Piecewise((1, t_sym <= 0.5), (0, t_sym > 0.5))
 for t in t_first:
     solution_1 = sp.dsolve(ODE, Uout(t_sym), ics={Uout(0): U0}).subs({RC_sym: RC, t_sym: t, Uout(0.5): 1})
-
-
 # Define the ODE
 '''
 solution_1 = sp.dsolve(ODE, Uout(t), ics={Uout(0): U0}).subs({RC_sym: RC, t: 0.5, Uout(0.5): 1})

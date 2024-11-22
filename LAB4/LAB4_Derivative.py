@@ -9,7 +9,7 @@ ref_point2 = pi/3
 ref_point3 = 0
 def function_1(x): # First Derivative = 1 - Second Derivative 6
     f1 = x**3 - 2*x
-    f_1_prime = diff(f1, x, 1).subs(x, ref_point1)
+    f_1_prime = diff(f1, x, 1).subs(x, ref_point1).evalf()
     return f1, f_1_prime
 def function_2(x): # First Derivative = 0.5 - Second Derivative -0.8660254037
     f2 = sin(x)
