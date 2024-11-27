@@ -10,6 +10,26 @@ X = Inputs [Fahrenheit]
 K = Coefficients [K1,K2]
 '''
 def rlse(X, Y, K, lamb):
+    """
+    Compute the Regularized Least Squares Estimation (RLSE) of the parameters.
+
+    Parameters
+    ----------
+    X : numpy array
+        Input matrix (Fahrenheit values)
+    Y : numpy array
+        Output vector (Celsius values)
+    K : numpy array
+        Initial estimate of the parameters
+    lamb : float
+        Regularization parameter
+
+    Returns
+    -------
+    numpy array
+        RLSE of the parameters
+    """
+    # Compute the RLSE of the parameters
     K = np.linalg.pinv(X.T @ X + lamb * np.eye(2)) @ X.T @ Y
     print(K)
     return K
