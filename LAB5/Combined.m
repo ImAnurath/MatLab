@@ -1,3 +1,4 @@
+%LAB5
 % Analytical Solution (from analytic.m)
 syms Uout(t) t
 RC = 0.1;
@@ -45,3 +46,4 @@ ylabel('Uout(t)');
 title('Analytical vs Numerical Solution');
 legend('show');
 grid on;
+%AV
